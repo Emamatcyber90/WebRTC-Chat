@@ -47,11 +47,11 @@ class Video extends Component {
   render () {
     return (
       <div className="video-box">
-        <ReactPlayer
+        {/* <ReactPlayer
         url={this.props.url}
         playing={this.state.playing}
         ref="video"
-        />
+        /> */}
         <button className="btn btn-play" onClick={this.onPlay}>Play</button>
         <button className="btn btn-pause" onClick={this.onPause}>Pause</button>
       </div>

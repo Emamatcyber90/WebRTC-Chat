@@ -36,7 +36,7 @@ class User extends Component {
     const { valid } = this.state
     return (
       <div>
-        <h1>Welcome to Yo-Fun</h1>
+        <h1>Welcome</h1>
         <form onSubmit={this.handleSubmit}>
           <input type="text" placeholder="enter your name" onChange={this.handleChange} />
           <input type="submit" />
