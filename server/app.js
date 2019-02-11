@@ -5,7 +5,7 @@ import { host, port } from '../config';
 import routes from './routes/index';
 
 let app = express();
-const server = require('http').createServer(app);
+const server = require('https').createServer(app);
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());

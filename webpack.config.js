@@ -24,5 +24,6 @@ module.exports = {
       watchContentBase: true,
       open: true,
       port: 8080,
+      https: true
   }
 };

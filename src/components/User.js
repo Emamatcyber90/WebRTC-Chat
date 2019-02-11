@@ -1,51 +1,61 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { loginUser } from '../actions/userAction'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { push } from "react-router-redux";
+import { loginUser } from "../actions/userAction";
 
 class User extends Component {
-
   state = {
-    username: '',
+    username: "",
     valid: true
-  }
+  };
 
-  handleChange = (e) => {
-    this.setState({username: e.target.value})
-  }
+  handleChange = e => {
+    this.setState({
+      username: e.target.value
+    });
+  };
 
-  handleSubmit = (e) => {
-    e.preventDefault()
-    let message = {username: this.state.username, type: 'addUsername'}
-    this.props.connection.send(JSON.stringify(message))
-    this.props.connection.onmessage = (message) => {
-      let data = JSON.parse(message.data)
-      console.log(data.status)
-      if (data.status === 'success') {
-        this.props.loginUser(this.state.username)
+  handleSubmit = e => {
+    e.preventDefault();
+    const { redirectToHome, connection, loginUser } = this.props;
+    const { username } = this.state;
+    const message = { username, type: "addUsername" };
+    connection.send(JSON.stringify(message));
+    connection.onmessage = message => {
+      let data = JSON.parse(message.data);
+      if (data.status === "success") {
+        loginUser({ username });
       } else {
-        this.setState({valid: false})
+        this.setState({ valid: false });
       }
-    }
-  }
+    };
+    redirectToHome();
+  };
 
   render() {
+    const { valid } = this.state
     return (
       <div>
         <h1>Welcome to Yo-Fun</h1>
         <form onSubmit={this.handleSubmit}>
-          <input
-            type="text"
-            placeholder="enter your name"
-            onChange={this.handleChange}
-          />
-          <input type="submit"/>
+          <input type="text" placeholder="enter your name" onChange={this.handleChange} />
+          <input type="submit" />
         </form>
-        {this.state.valid ? <div></div> : (
-          <div>Username exists</div>
-        )}
+        {valid ? <div /> : <div>Username exists</div>}
       </div>
-    )
+    );
   }
 }
 
-export default connect(null, { loginUser })(User)
+function mapDispatchToProps(dispatch) {
+  return {
+    loginUser(name) {
+      dispatch(loginUser(name));
+    },
+    redirectToHome() {
+      dispatch(push("/createRoom"));
+    }
+  };
+}
+
+export default connect(null, mapDispatchToProps)(User);

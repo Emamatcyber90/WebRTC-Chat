@@ -1,31 +1,30 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { pickRoom } from '../../actions/roomAction'
-import { isJoiner } from '../../actions/userAction'
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { pickRoom } from "../../actions/roomAction";
+import { isJoiner } from "../../actions/userAction";
 
 class RoomList extends Component {
-
   state = {
     rooms: []
-  }
+  };
 
   renderRooms = () => {
-    this.props.connection.send(JSON.stringify({type: 'getRoomname'}))
-    this.props.connection.onmessage = (message) => {
-      this.setState({rooms: JSON.parse(message.data)})
-    }
-  }
+    this.props.connection.send(JSON.stringify({ type: "getRoomname" }));
+    this.props.connection.onmessage = message => {
+      this.setState({ rooms: JSON.parse(message.data) });
+    };
+  };
 
   componentDidMount() {
-    this.renderRooms()
+    this.renderRooms();
   }
 
-  handleChange = (e) => {
-    if (e.target.value !== 'Select a room') {
-      this.props.pickRoom(e.target.value)
-      this.props.isJoiner()
+  handleChange = e => {
+    if (e.target.value !== "Select a room") {
+      this.props.pickRoom(e.target.value);
+      this.props.isJoiner();
     }
-  }
+  };
 
   render() {
     return (
@@ -33,20 +32,28 @@ class RoomList extends Component {
         <h3>Or pick a room:</h3>
         <select onChange={this.handleChange}>
           <option>Select a room</option>
-          {this.state.rooms.map(room => (
-            <option key={room}>{room}</option>
-          )
-        )}
+          {this.state.rooms.map(room => <option key={room}>{room}</option>)}
         </select>
       </div>
-    )
+    );
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = state => {
   return {
     rooms: state.room.rooms
-    };
+  };
 };
 
-export default connect(mapStateToProps, { pickRoom, isJoiner })(RoomList)
+function mapDispatchToProps(dispatch) {
+  return {
+    pickRoom(name) {
+      dispatch(pickRoom(name));
+    },
+    isJoiner() {
+      dispatch(isJoiner());
+    }
+  };
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(RoomList);
