@@ -1,11 +1,9 @@
 import express from "express";
+import controller from "../controller";
 
 const router = express.Router();
 
-router.get("/v1", (req, res) => {
-  res.json({
-    message: "Hello,world"
-  });
-});
+router.get("/auth/google", controller.googleAuth);
+router.get("/auth/google/callback", controller.googleAuthCallBack);
 
 export default router;

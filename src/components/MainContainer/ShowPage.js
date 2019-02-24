@@ -11,7 +11,9 @@ class ShowPage extends Component {
 
   constructor(props) {
     super(props);
-    const configuration = { iceServers: [{ url: "stun:stun.1.google.com:19302" }] };
+    const configuration = {
+      iceServers: [{ url: "stun:stun.1.google.com:19302" }]
+    };
     this.myConnection = new RTCPeerConnection(configuration);
     this.myConnection.onicecandidate = e => {
       try {
@@ -48,7 +50,9 @@ class ShowPage extends Component {
     };
 
     console.log("dataChannel", this.myConnection.createDataChannel(props.room, { reliable: true }));
-    this.dataChannel = this.myConnection.createDataChannel(props.room, { reliable: true });
+    this.dataChannel = this.myConnection.createDataChannel(props.room, {
+      reliable: true
+    });
   }
 
   onLogin = () => {};
